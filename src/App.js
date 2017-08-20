@@ -7,6 +7,7 @@ import BookList from './BookList'
 
 class BooksApp extends React.Component {
   state = {
+    allBooks: []
     /**
      * TODO: Instead of using this state variable to keep track of which page
      * we're on, use the URL in the browser's address bar. This will ensure that
@@ -15,14 +16,24 @@ class BooksApp extends React.Component {
      */
   }
 
+  componentDidMount() {
+    BooksAPI.getAll().then((allBooks)=>{
+      this.setState({ allBooks })
+    })
+  }
+
   render() {
     return (
       <div className="app">
         <Route exact path="/" render={() => (
-          <BookList />
+          <BookList
+            allBooks={this.state.allBooks}
+          />
         )}/>
         <Route path="/create" render={() => (
-          <CreateBook />
+          <CreateBook
+            allBooks={this.state.allBooks}
+          />
         )}/>
       </div>
     )
