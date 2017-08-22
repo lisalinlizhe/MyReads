@@ -1,31 +1,15 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
-import escapeRegExp from 'escape-string-regexp'
 
-
-class CreateBook extends Component {
-  state = {
-    query: ''
+class SearchBook extends Component {
+  handleSubmit = (bookId, e) => {
+    if (this.props.addBook)
+      this.props.addBook(bookId, e)
   }
-
-  updateQuery = (query) => {
-    this.setState({ query: query.trim() })
-  }
-
-  clearQuery = () => {
-    this.setState({ query: '' })
-  }
-
   render() {
-    const { allBooks } = this.props
-    const { query } = this.state
-    let showingBooks
-    if(query) {
-      const match = new RegExp(escapeRegExp(query), 'i')
-      showingBooks = allBooks.filter((book)=> match.test(book.title))
-    }else {
-      showingBooks = allBooks
-    }
+    // const { searchResult } = this.state
+    const { addBook, searchBooks, searchResult } = this.props
+    console.log(searchResult)
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -41,21 +25,20 @@ class CreateBook extends Component {
             */}
             <input type="text"
               placeholder="Search by title or author"
-              value={this.state.query}
-              onChange={(event)=> this.updateQuery(event.target.value)}
+              onChange={(event)=> searchBooks(event.target.value)}
             />
 
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {showingBooks.map((book)=> (
+            {searchResult.map((book)=> (
               <li key={book.id}>
                 <div className="book">
                 <div className="book-top">
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                     <div className="book-shelf-changer">
-                      <select>
+                      <select value={book.shelf} onChange={(event)=>this.handleSubmit(book.id, event)}>
                         <option value="none" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
@@ -66,9 +49,7 @@ class CreateBook extends Component {
                 </div>
                 <div className="book-title">{book.title}</div>
                 <div className="book-authors">
-                  {book.authors.map((author)=>(
-                    <p key={author}>{author}</p>
-                  ))}
+                  <p>{book.authors}</p>
                 </div>
               </div>
               </li>
@@ -80,4 +61,4 @@ class CreateBook extends Component {
   }
 }
 
-export default CreateBook
+export default SearchBook

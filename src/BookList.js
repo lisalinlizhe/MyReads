@@ -2,22 +2,12 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 
 class BookList extends Component {
-  state = {
-    status: ''
-  }
-
-  changeBookStatus = (book, event) => {
-    this.setState({status: event.target.value})
-    book.shelf = event.target.value
-  }
-
   render() {
-    const { allBooks } = this.props
-    const { status } = this.state
+    const { allBooks, changeBookStatus } = this.props
     let currentlyReading, wantToRead, read
-    currentlyReading= allBooks.filter((book)=> book.shelf === 'currentlyReading')
-    wantToRead= allBooks.filter((book)=> book.shelf === 'wantToRead')
-    read= allBooks.filter((book)=> book.shelf === 'read')
+    currentlyReading = allBooks.filter((book)=> book.shelf === 'currentlyReading')
+    wantToRead = allBooks.filter((book)=> book.shelf === 'wantToRead')
+    read = allBooks.filter((book)=> book.shelf === 'read')
 
     return (
       <div className="list-books">
@@ -36,7 +26,7 @@ class BookList extends Component {
                       <div className="book-top">
                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                           <div className="book-shelf-changer">
-                            <select value={book.shelf} onChange={(event)=>this.changeBookStatus(book, event)}>
+                            <select value={book.shelf} onChange={(event)=>changeBookStatus(book, event)}>
                               <option value="none" disabled>Move to...</option>
                               <option value="currentlyReading">Currently Reading</option>
                               <option value="wantToRead">Want to Read</option>
@@ -47,9 +37,7 @@ class BookList extends Component {
                       </div>
                       <div className="book-title">{book.title}</div>
                       <div className="book-authors">
-                        {book.authors.map((author)=>(
-                          <p key={author}>{author}</p>
-                        ))}
+                        <p>{book.authors}</p>
                       </div>
                     </div>
                     </li>
@@ -67,7 +55,7 @@ class BookList extends Component {
                       <div className="book-top">
                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                           <div className="book-shelf-changer">
-                            <select value={book.shelf} onChange={(event)=> this.changeBookStatus(book, event)}>
+                            <select value={book.shelf} onChange={(event)=>changeBookStatus(book, event)}>
                               <option value="none" disabled>Move to...</option>
                               <option value="currentlyReading">Currently Reading</option>
                               <option value="wantToRead">Want to Read</option>
@@ -78,9 +66,7 @@ class BookList extends Component {
                       </div>
                       <div className="book-title">{book.title}</div>
                       <div className="book-authors">
-                        {book.authors.map((author)=>(
-                          <p key={author}>{author}</p>
-                        ))}
+                        <p>{book.authors}</p>
                       </div>
                     </div>
                     </li>
@@ -98,7 +84,7 @@ class BookList extends Component {
                       <div className="book-top">
                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                           <div className="book-shelf-changer">
-                            <select value={book.shelf} onChange={(event)=>this.changeBookStatus(book, event)}>
+                            <select value={book.shelf} onChange={(event)=>changeBookStatus(book, event)}>
                               <option value="none" disabled>Move to...</option>
                               <option value="currentlyReading">Currently Reading</option>
                               <option value="wantToRead">Want to Read</option>
@@ -109,9 +95,7 @@ class BookList extends Component {
                       </div>
                       <div className="book-title">{book.title}</div>
                       <div className="book-authors">
-                        {book.authors.map((author)=>(
-                          <p key={author}>{author}</p>
-                        ))}
+                        <p>{book.authors}</p>
                       </div>
                   </div>
                   </li>
@@ -123,7 +107,7 @@ class BookList extends Component {
         </div>
         <div className="open-search">
           <Link
-            to="/create">Add a book</Link>
+            to="/search">Add a book</Link>
         </div>
       </div>
     )
