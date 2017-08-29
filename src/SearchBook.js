@@ -1,15 +1,11 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import BookGrid from './BookGrid';
 
 class SearchBook extends Component {
-  handleSubmit = (bookId, e) => {
-    if (this.props.addBook)
-      this.props.addBook(bookId, e)
-  }
   render() {
     // const { searchResult } = this.state
-    const { addBook, searchBooks, searchResult } = this.props
-    console.log(searchResult)
+    const { query, searchResult, onBookChange, onChange, onKeyPress} = this.props
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -25,37 +21,18 @@ class SearchBook extends Component {
             */}
             <input type="text"
               placeholder="Search by title or author"
-              onChange={(event)=> searchBooks(event.target.value)}
+              onChange={onChange}
+              value={query}
+              onKeyPress={onKeyPress}
             />
 
           </div>
         </div>
-        <div className="search-books-results">
-          <ol className="books-grid">
-            {searchResult.map((book)=> (
-              <li key={book.id}>
-                <div className="book">
-                <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                    <div className="book-shelf-changer">
-                      <select value={book.shelf} onChange={(event)=>this.handleSubmit(book.id, event)}>
-                        <option value="none" disabled>Move to...</option>
-                        <option value="currentlyReading">Currently Reading</option>
-                        <option value="wantToRead">Want to Read</option>
-                        <option value="read">Read</option>
-                        <option value="none">None</option>
-                      </select>
-                  </div>
-                </div>
-                <div className="book-title">{book.title}</div>
-                <div className="book-authors">
-                  <p>{book.authors}</p>
-                </div>
-              </div>
-              </li>
-            ))}
-          </ol>
-        </div>
+        {searchResult.length > 0 && (
+           <div className="search-books-results">
+             <BookGrid books={searchResult} onBookChange={onBookChange}/>
+           </div>
+         )}
       </div>
     )
   }
